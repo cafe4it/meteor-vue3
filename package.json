@@ -9,9 +9,13 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.15.4",
+    "@casl/ability": "^5.4.3",
+    "@casl/vue": "^2.1.2",
+    "bcrypt": "^5.0.1",
+    "lodash": "^4.17.21",
     "meteor-node-stubs": "^1.1.0",
-    "vue": "^3.2.23",
-    "vue-meteor-tracker": "^2.0.0-beta.5"
+    "pinia": "^2.0.4",
+    "vue": "^3.2.23"
   },
   "meteor": {
     "mainModule": {

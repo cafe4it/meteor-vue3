@@ -1,0 +1,11 @@
+import {Meteor} from "meteor/meteor";
+
+export const callMethod = ({ name, args }) =>
+    new Promise((resolve, reject) => {
+        Meteor.call(name, args, (error, result) => {
+            if (error) {
+                return reject(error)
+            }
+            return resolve(result)
+        })
+    })

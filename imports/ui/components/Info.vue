@@ -1,5 +1,8 @@
 <template>
   <h2>Learn Meteor!</h2>
+  <p v-if="currentUser">
+    username: <span>{{currentUser.username}}</span> <button>Logout</button>
+  </p>
   <ul>
     <li>
       <form @submit.prevent="submit($event.target)">
@@ -13,14 +16,19 @@
 
     <li v-for="link of links" :key="link._id">
       <a :href="link.url" target="_blank">{{ link.title }}</a>
+      &nbsp;
+      <button @click="deleteLink(link._id)">x</button>
     </li>
   </ul>
 </template>
 
 <script setup>
 import Links from '../../api/collections/Links'
-import { subscribe, autoSubscribe, autoResult } from 'meteor/vuejs:vue3'
-
+import { subscribe, autoResult } from 'meteor/vuejs:vue3'
+import { useStore } from "../stores/main";
+import { storeToRefs } from 'pinia'
+const store = useStore()
+const {currentUser} = storeToRefs(store)
 const { ready } = subscribe('links')
 // const { ready } = autoSubscribe(() => ['links.all'])
 
@@ -38,6 +46,16 @@ function submit (form) {
       url.value = ''
     }
   })
+}
+
+function deleteLink(id){
+  if(id){
+    Meteor.call('deleteLink', id, function (err) {
+      if(err){
+        alert(err.error)
+      }
+    })
+  }
 }
 </script>
 
