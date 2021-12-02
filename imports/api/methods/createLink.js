@@ -8,20 +8,21 @@ Meteor.methods({
     check(title, String);
     const rules = Meteor.call('user.getPermissions')
     const ability = new Ability(rules)
-    // console.log(ability.can('create', 'Links'), rules)
-
-    return ability.can('create', 'Links') ? Links.insert({
+    const link = {
       url,
       title,
       createdAt: new Date(),
       authorId: this.userId
-    }) : null;
+    }
+    // ForbiddenError.from(ability).throwUnlessCan('create', subject('Link', link));
+    return ability.can('create', subject('Link', link)) ? Links.insert(link) : null
   },
   'deleteLink'(id){
     check(id, String)
     const rules = Meteor.call('user.getPermissions')
     const ability = new Ability(rules)
-
-    return ability.can('delete', 'Links') ? Links.remove({_id: id}) : null
+    const link = Links.findOne({_id: id})
+    // ForbiddenError.from(ability).throwUnlessCan('delete', subject('Link', link));
+    return ability.can('delete', subject('Link', link)) ? Links.remove({_id: id}) : null
   }
 });

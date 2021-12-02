@@ -17,7 +17,7 @@
     <li v-for="link of links" :key="link._id">
       <a :href="link.url" target="_blank">{{ link.title }}</a>
       &nbsp;
-      <button @click="deleteLink(link._id)">x</button>
+      <button :disabled="!$can('delete', link)" @click="deleteLink(link._id)">x</button>
     </li>
   </ul>
 </template>
@@ -30,9 +30,10 @@ import { storeToRefs } from 'pinia'
 const store = useStore()
 const {currentUser} = storeToRefs(store)
 const { ready } = subscribe('links')
+import { subject as an } from '@casl/ability'
 // const { ready } = autoSubscribe(() => ['links.all'])
 
-const links = autoResult(() => Links.find({}))
+const links = autoResult(() => Links.find({}).map((l) => an('Link', l)))
 
 function submit (form) {
   const title = form.title

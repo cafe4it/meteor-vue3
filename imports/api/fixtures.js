@@ -17,8 +17,8 @@ Meteor.startup(() => {
     Roles.insert({
       _id: 'member',
       permissions: [
-        { action: 'read', subject: 'Links' },
-        { action: 'manage', subject: 'Links', conditions: { authorId: '${user._id}' } },
+        { action: 'read', subject: 'Link' },
+        { action: 'manage', subject: 'Link', conditions: { authorId: '${user._id}' } },
       ]
     })
   }
